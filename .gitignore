@@ -1,3 +1,6 @@
+# Local script with real credentials - NEVER commit
+run-backend-local.sh
+
 # OS
 .DS_Store
 
