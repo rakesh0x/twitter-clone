@@ -1,13 +1,48 @@
-How To Set UP Project on Your Local machine
+How To Set UP Project on Your Local Machine (Windows)
 
+Prerequisites (install these first):
+1. Git            - https://git-scm.com/download/win
+2. JDK 17         - https://adoptium.net (Temurin 17 LTS)
+3. Node.js 18+    - https://nodejs.org (includes npm)
+4. MySQL Server   - https://dev.mysql.com/downloads/installer/
+   Verify: open Command Prompt and run "java -version" and "node -v"
 
-frontend:
+1. CLONE THE PROJECT
+   git clone https://github.com/rakesh0x/twitter-clone.git
+   cd twitter-clone
 
-run npm i
-npm start(start your project)
+2. SETUP DATABASE (MySQL)
+   Start MySQL (Services app or MySQL Command Line Client) and run:
+     CREATE DATABASE twitter;
+   The app auto-creates all tables on startup (ddl-auto=update).
 
-backend:
+3. CONFIGURE SECRETS (backend)
+   Credentials are read from environment variables, NOT stored in the repo.
+   In Command Prompt (same window you run the backend from):
 
-create database "twitter" in your mysql
+     set DB_PASSWORD=your_mysql_root_password
+     set GOOGLE_CLIENT_ID=your_google_oauth_client_id
+     set GOOGLE_CLIENT_SECRET=your_google_oauth_client_secret
+     set RAZORPAY_API_KEY=your_razorpay_key
+     set RAZORPAY_API_SECRET=your_razorpay_secret
 
-replace username and password with your username and password of mysql database in application.properties file
+   (Or create your own client id/secret at https://console.cloud.google.com
+    for Google OAuth, and https://dashboard.razorpay.com for payments.)
+
+4. RUN BACKEND (port 5454)
+   cd "backend spring boot"
+   mvnw.cmd spring-boot:run
+   Wait until you see "Started TwitterApplication". Swagger UI:
+   http://localhost:5454/swagger-ui/index.html
+
+5. RUN FRONTEND (port 3000) - open a NEW Command Prompt window
+   cd "frontend react"
+   npm install
+   npm start
+   Then open http://localhost:3000 in your browser.
+
+Troubleshooting:
+- "mvnw.cmd is not recognized" -> run from inside "backend spring boot" folder
+- Port 5454 already in use -> change server.port in
+  "backend spring boot/src/main/resources/application.properties"
+- DB connection error -> make sure MySQL is running and DB_PASSWORD matches
